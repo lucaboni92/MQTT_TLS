@@ -1,0 +1,13 @@
+### GENERATE ROOT KEY AND CERT ###
+
+openssl genrsa -out mqttRootCA.key 2048
+
+openssl req -x509 -new -nodes -key mqttRootCA.key -sha256 -days 1024 -out mqttRootCA.pem
+
+### GENERATE CLIENT KEY AND CERT ###
+
+openssl genrsa -out mqttClient.key 2048
+
+openssl req -new -key  mqttClient.key -out mqttClient.csr
+
+openssl x509 -req -in mqttClient.csr -CA mqttRootCA.pem -CAkey mqttRootCA.key -CAcreateserial -out mqttClient.pem -days 1024 -sha256
