@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 from config import *
+import ssl
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -23,6 +24,7 @@ def main():
         client.on_message = on_message
 
         client.username_pw_set(username, password=passwd)
+        client.tls_set(ca_cert, certfile, keyfile, cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLS, ciphers=None)
         client.connect(broker)
 
         client.loop_forever()
